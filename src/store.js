@@ -5,10 +5,12 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-
+    isSidebarOpen: false
   },
   mutations: {
-
+    toggleSidebar (state, value) {
+      state.isSidebarOpen = value;
+    }
   },
   actions: {
 

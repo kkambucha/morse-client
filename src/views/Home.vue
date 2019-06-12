@@ -1,13 +1,13 @@
 <template>
-  <HelloWorld />
+  <MorseChat />
 </template>
 
 <script>
-  import HelloWorld from '../components/HelloWorld'
+  import MorseChat from '../components/MorseChat'
 
   export default {
     components: {
-      HelloWorld
+      MorseChat
     }
   }
 </script>

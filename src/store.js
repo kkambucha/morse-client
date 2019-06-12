@@ -5,7 +5,11 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    isSidebarOpen: false
+    isSidebarOpen: false,
+    signalKey: 'z',
+    clearKey: 'x',
+    sendKey: 'Enter',
+    backspaceKey: 'v'
   },
   mutations: {
     toggleSidebar (state, value) {

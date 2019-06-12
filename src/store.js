@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { stringify } from 'querystring';
+import { send } from 'q';
 
 Vue.use(Vuex)
 
@@ -13,39 +15,11 @@ export default new Vuex.Store({
     username: 'Anonymous',
     isRedLightOn: false,
     possibleCharacters: '',
+    userToken: '',
+    userSocket: null,
+    userIsRegistrated: false,
     message: '',
-    messages: [
-      {
-        author: 'Anonymous',
-        text: 'Asdas',
-        isOwn: false
-      },
-      {
-        author: 'Vadim',
-        text: 'qweqwe',
-        isOwn: false
-      },
-      {
-        author: 'Anonymous',
-        text: 'Asdas',
-        isOwn: true
-      },
-      {
-        author: 'Vadim',
-        text: 'qweqwe',
-        isOwn: false
-      },
-      {
-        author: 'Anonymous',
-        text: 'Asdas',
-        isOwn: false
-      },
-      {
-        author: 'Vadim',
-        text: 'qweqwe',
-        isOwn: true
-      }
-    ]
+    messages: []
   },
   mutations: {
     toggleSidebar (state, value) {
@@ -67,9 +41,67 @@ export default new Vuex.Store({
         this.commit('setMessage', '');
         this.commit('setPossibleCharacters', '');
       }
+    },
+    setUserToken (state, token) {
+      state.userToken = token;
+    },
+    setUserSocket (state, socket) {
+      state.userSocket = socket;
+    },
+
+    // settings
+
+    setSignalKey (state, value) {
+      state.signalKey = value;
+    },
+    setUsername (state, value) {
+      state.username = value;
+    },
+    setUserIsRegistrated (state, value) {
+      state.userIsRegistrated = value;
     }
   },
   actions: {
+    userRegistration () {
+      const conn = Vue.prototype.$socket;
 
+      if (!this.state.userIsRegistrated) {
+        conn.onmessage = (e) => {
+          const data = JSON.parse(e.data);
+
+          if (data.type === 'registration') {
+            this.commit('setUserToken', data.token)
+            this.commit('setUserSocket', data.socket);
+          }
+
+          if (data.type === 'message') {
+            if (data.token !== this.state.userToken) {
+              this.commit('addMessage', {
+                author: data.username,
+                isOwn: false,
+                text: data.text
+              })
+            }
+          }
+        };
+
+        conn.onopen = () => conn.send(JSON.stringify({
+          'type': 'registration',
+          'username': this.state.username
+        }));
+
+        this.commit('setUserIsRegistrated', true);
+      }
+    },
+    sendMessage () {
+      const conn = Vue.prototype.$socket;
+
+      conn.send(JSON.stringify({
+        'type': 'message',
+        'username': this.state.username,
+        'text': this.state.message,
+        'token': this.state.userToken
+      }));
+    }
   }
 })

@@ -36,12 +36,18 @@
       this.signalSound = new SoundCreator('signal.wav');
     },
     mounted () {
+      this.$store.dispatch('userRegistration');
+
       window.addEventListener('keydown', this.keyDown);
       window.addEventListener('keyup', this.keyUp);
 
       this.morseCode.on('message', (message) => {
         this.$store.commit('setMessage', message);
       });
+    },
+    destroyed () {
+      window.removeEventListener('keydown', this.keyDown);
+      window.removeEventListener('keyup', this.keyUp);
     },
     methods: {
       keyDown (event) {
@@ -57,12 +63,10 @@
           }
 
           if (code === this.backspaceKey) {
-            console.log('backspace key');
             this.morseCode.backspace();
           }
 
           if (code === this.clearKey) {
-            console.log('clear key');
             this.morseCode.clearMessage();
           }
         });
@@ -78,10 +82,13 @@
         });
       },
       sendMessage () {
+        this.$store.dispatch('sendMessage');
+
         if (this.message) {
           this.$store.commit('addMessage', {
             text: this.message,
-            author: this.username
+            author: 'You',
+            isOwn: true
           });
 
           this.morseCode.clearMessage();

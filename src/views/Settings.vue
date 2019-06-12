@@ -1,14 +1,14 @@
 <template>
-  <v-container>
-    <v-layout>
-      <h1>Settings!</h1>
-    </v-layout>
-  </v-container>
+  <SettingsPanel></SettingsPanel>
 </template>
 
 <script>
-export default {
+import SettingsPanel from '../components/SettingsPanel';
 
+export default {
+  components: {
+    SettingsPanel
+  }
 }
 </script>
 

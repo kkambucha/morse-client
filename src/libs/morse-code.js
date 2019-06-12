@@ -41,7 +41,7 @@ export default class MorseCode extends EventEmitter {
   }
 
   getPosibleCharacters() {
-    return this._resolvePartial();
+    return this._resolvePartial().join(', ');
   }
 
   clearMessage() {

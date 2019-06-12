@@ -73,6 +73,7 @@
             this.signalSound.stop();
             this.morseCode.stopSignal();
             this.$store.commit('toggleRedLight');
+            this.$store.commit('setPossibleCharacters', this.morseCode.getPosibleCharacters());
           }
         });
       },

@@ -12,6 +12,7 @@ export default new Vuex.Store({
     backspaceKey: 'v',
     username: 'Anonymous',
     isRedLightOn: false,
+    possibleCharacters: '',
     message: '',
     messages: [
       {
@@ -55,9 +56,17 @@ export default new Vuex.Store({
     },
     setMessage (state, value) {
       state.message = value;
+      this.commit('setPossibleCharacters', '');
+    },
+    setPossibleCharacters (state, characters) {
+      state.possibleCharacters = characters;
     },
     addMessage (state, message) {
-      state.messages.push(message);
+      if (message) {
+        state.messages.push(message);
+        this.commit('setMessage', '');
+        this.commit('setPossibleCharacters', '');
+      }
     }
   },
   actions: {

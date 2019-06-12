@@ -1,5 +1,8 @@
 <template>
   <v-card class='message-wrapper'>
+    <div class='possible-characters' v-if='possibleCharacters'>
+      {{ possibleCharacters }}
+    </div>
     <v-card-text>
       <v-textarea
         solo
@@ -35,7 +38,8 @@ export default {
   },
   computed: {
     ...mapState([
-      'message'
+      'message',
+      'possibleCharacters'
     ])
   }
 }
@@ -49,5 +53,16 @@ export default {
     padding: 0 16px;
     top: -20px;
     position: relative;
+  }
+  .possible-characters {
+    position: absolute;
+    top: -40px;
+    text-transform: uppercase;
+    background: rgba(0, 0, 0, .7);
+    color: #fff;
+    padding: 10px 20px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    font-size: 18px;
   }
 </style>

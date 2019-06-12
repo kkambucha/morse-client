@@ -3,7 +3,7 @@
 </template>
 
 <script>
-  import MorseChat from '../components/MorseChat'
+  import MorseChat from '../components/MorseChat/MorseChat'
 
   export default {
     components: {

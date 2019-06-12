@@ -9,11 +9,29 @@ export default new Vuex.Store({
     signalKey: 'z',
     clearKey: 'x',
     sendKey: 'Enter',
-    backspaceKey: 'v'
+    backspaceKey: 'v',
+    username: 'Anonymous',
+    message: '',
+    messages: [
+      {
+        author: 'Anonymous',
+        text: 'Asdas'
+      },
+      {
+        author: 'Vadim',
+        text: 'qweqwe'
+      }
+    ]
   },
   mutations: {
     toggleSidebar (state, value) {
       state.isSidebarOpen = value;
+    },
+    setMessage (state, value) {
+      state.message = value;
+    },
+    addMessage (state, message) {
+      state.messages.push(message);
     }
   },
   actions: {

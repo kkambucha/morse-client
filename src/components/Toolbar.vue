@@ -10,7 +10,6 @@
 
 <script>
 export default ({
-  name: 'Toolbar',
   methods: {
     toggleSidebar () {
       this.$store.commit('toggleSidebar', !this.$store.state.isSidebarOpen);

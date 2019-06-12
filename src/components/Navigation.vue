@@ -20,7 +20,6 @@
 
 <script>
 export default {
-  name: 'Navigation',
   data: () => ({
     items: {
       main: {

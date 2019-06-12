@@ -5,7 +5,7 @@
         <ChatWindow></ChatWindow>
       </div>
       <div class='chat-message'>
-        <ChatMessage></ChatMessage>
+        <ChatMessage :clearMessage='clearMessage' :sendMessage='sendMessage' :backspaceMessage='backspaceMessage'></ChatMessage>
       </div>
     </div>
   </v-container>
@@ -44,11 +44,12 @@
       });
     },
     methods: {
-      keyDown: function (event) {
+      keyDown (event) {
         dispatchForCode(event, code => {
           if (code === this.signalKey) {
             this.signalSound.play();
             this.morseCode.startSignal();
+            this.$store.commit('toggleRedLight');
           }
 
           if (code === this.sendKey) {
@@ -66,15 +67,16 @@
           }
         });
       },
-      keyUp: function (event) {
+      keyUp (event) {
         dispatchForCode(event, code => {
           if (code === this.signalKey) {
             this.signalSound.stop();
             this.morseCode.stopSignal();
+            this.$store.commit('toggleRedLight');
           }
         });
       },
-      sendMessage: function () {
+      sendMessage () {
         if (this.message) {
           this.$store.commit('addMessage', {
             text: this.message,
@@ -83,6 +85,13 @@
 
           this.morseCode.clearMessage();
         }
+      },
+      clearMessage () {
+        this.$store.commit('setMessage', '');
+        this.morseCode.clearMessage();
+      },
+      backspaceMessage () {
+        this.morseCode.backspace();
       }
     },
     computed: {
@@ -103,7 +112,6 @@
     height: 100%;
     width: 100%;
     position: relative;
-    border: 1px solid #000;
   }
   .chat-window {
     height: 100%;

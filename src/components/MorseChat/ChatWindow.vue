@@ -1,6 +1,8 @@
 <template>
   <v-card class='chat-window-wrapper'>
-    <ChatMessageText v-for='(message, key) in messages' :key='key' :message='message'></ChatMessageText>
+    <div class='chat-window-messages' ref='scrollable'>
+      <ChatMessageText v-for='(message, key) in messages' :key='key' :message='message'></ChatMessageText>
+    </div>
   </v-card>
 </template>
 
@@ -12,6 +14,16 @@ import ChatMessageText from './ChatMessageText';
 export default {
   components: {
     ChatMessageText
+  },
+  methods: {
+    onMessagesChange () {
+      this.$nextTick(() => {
+        this.$refs.scrollable.scrollTop = this.$refs.scrollable.scrollHeight;
+      });
+    }
+  },
+  watch: {
+    messages: 'onMessagesChange'
   },
   computed: {
     ...mapState([
@@ -29,6 +41,18 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    border: 1px solid #000;
+    overflow-y: auto;
+    padding: 20px;
+  }
+
+  .chat-window-messages {
+    height: auto;
+    overflow-y: scroll;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 0 20px 20px;
   }
 </style>

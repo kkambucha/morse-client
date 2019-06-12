@@ -1,5 +1,5 @@
 <template>
-  <div class='message-text'>
+  <div class='message-text' :class='{ "m-is-own": message.isOwn }'>
     <div class='message-text-author'>
       {{ message.author }}
     </div>
@@ -28,6 +28,21 @@ export default {
     background-color: var(--v-info-base);
     color: #fff;
     border-radius: 7px !important;
+    float: left;
+    clear: both;
+
+    &.m-is-own {
+      float: right;
+
+      &:before {
+        left: -9px;
+        top: -9px;
+        transform: rotate(35deg);
+        border-left: 15px transparent;
+        border-right: 25px solid var(--v-info-base);
+        right: auto;
+      }
+    }
 
     &:before {
       content: '';
